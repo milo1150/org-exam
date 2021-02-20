@@ -1,25 +1,32 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useMemo } from 'react';
 import { ApplicantBox, Layout, StepBox } from '../../style/MarathonStyles';
 import { Steps } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import { initialState } from '../../initData/ApplicantInit';
-import { initMarathonState, Personalinfo } from '../../Typescript/Type';
+import { initialState, MockPersonalinfo } from '../../initData/ApplicantInit';
+import {
+  initMarathonState,
+  Personalinfo,
+  ActionType,
+} from '../../Typescript/Type';
 import PersonalinfoComp from '../../components/marathon/Personalinfo';
+
 const { Step } = Steps;
 
-type ActionType =
-  | { type: 'currentstep'; payload: number }
-  | { type: 'updatePersonalinfo'; payload: string };
-
-function reducer(state: initMarathonState, action: ActionType) {
+function reducer(
+  state: initMarathonState,
+  action: ActionType
+): initMarathonState {
   switch (action.type) {
+    case 'updatePersonalinfoTest':
+      console.log('BRUH:', action.payload);
+      const testData = { ...state };
+      testData['Personalinfo'] = action.payload;
+      return testData;
     case 'updatePersonalinfo':
-      console.log(action.payload);
-      let stateS: initMarathonState = { ...state };
-      stateS.Personalinfo.firstname = action.payload;
-      return { ...stateS };
-    // case 'updatePersonalinfo':
-
+      console.log('updatepersonalinfo:', action.payload);
+      const dataPersonalinfo = { ...state };
+      dataPersonalinfo['Personalinfo'] = action.payload;
+      return dataPersonalinfo;
     default:
       return initialState;
   }
@@ -27,7 +34,11 @@ function reducer(state: initMarathonState, action: ActionType) {
 
 const Applicant: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  useEffect(() => {
+  function dispatchPersonalinfo(data: Personalinfo): void {
+    return dispatch({ type: 'updatePersonalinfo', payload: data });
+  }
+
+  useMemo(() => {
     const cookies: string = document.cookie;
     const cookiesArr: string[] = cookies.split('; ');
     let key: string = '';
@@ -44,15 +55,21 @@ const Applicant: React.FC = () => {
        * then dispatch Reducer
        * example : dispatch({ type: 'updateInitialState', payload: {data from backend} });
        */
-      dispatch({ type: 'updatePersonalinfo', payload: 'kortoei' });
+      console.log('GOT KEY');
+      console.log('MOCK:', MockPersonalinfo);
+      dispatch({ type: 'updatePersonalinfoTest', payload: MockPersonalinfo });
     } else {
       // DF is just sample name of applicant key
       const uuid: string = uuidv4();
       document.cookie = `DF=${uuid}`;
     }
-    document.cookie = 'DF=;expires = Thu, 01 Jan 1970 00:00:00 GMT';
-    // console.log(state);
+    // document.cookie = 'DF=;expires = Thu, 01 Jan 1970 00:00:00 GMT';
   }, []);
+
+  useEffect(() => {
+    console.log('MAIN STATE:', state);
+  }, [state]);
+
   return (
     <Layout>
       <StepBox>
@@ -66,7 +83,10 @@ const Applicant: React.FC = () => {
       </StepBox>
       <ApplicantBox>
         {state.currentStep === 0 && (
-          <PersonalinfoComp props={state.Personalinfo} />
+          <PersonalinfoComp
+            props={state.Personalinfo}
+            dispatch={dispatchPersonalinfo}
+          />
         )}
         {state.currentStep === 1 && <p>ข้อมูลเกี่ยวกับการวิ่ง</p>}
       </ApplicantBox>

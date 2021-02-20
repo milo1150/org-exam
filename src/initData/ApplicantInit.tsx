@@ -67,14 +67,14 @@ export const initialState: initMarathonState = {
 };
 
 export const MockPersonalinfo: Personalinfo = {
-  title: '',
-  firstname: '',
-  lastname: '',
+  title: 'Mr',
+  firstname: 'kortoei ',
+  lastname: 'tongmanee',
   birth: '',
   email: '',
   idcard: '',
-  address: '',
-  contact: '',
+  address: '55555555',
+  contact: '0994717374',
   photo: '',
   nameBIB: '',
 };

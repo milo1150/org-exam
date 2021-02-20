@@ -1,3 +1,6 @@
+import Personalinfo from '../components/marathon/Personalinfo';
+
+// Main Initialstate
 export interface initMarathonState {
   currentStep: number;
   Personalinfo: Personalinfo;
@@ -5,8 +8,12 @@ export interface initMarathonState {
   EmergencyContact: EmergencyContact;
   Medicalinfo: Medicalinfo;
   Souvenir: Souvenir;
+  [index: string]: any;
 }
 
+/**
+ * Sub initialstate
+ */
 export interface Personalinfo {
   title: string;
   firstname: string;
@@ -58,3 +65,41 @@ export interface Medicalinfo {
 export interface Souvenir {
   Tshirt: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | '';
 }
+
+/**
+ * ACTION TYPE
+ */
+
+export type ActionType =
+  | { type: 'updatePersonalinfoTest'; payload: Personalinfo }
+  | { type: 'currentstep'; payload: number }
+  | { type: 'updatePersonalinfo'; payload: Personalinfo };
+
+/**
+ * Save Draft RegExp
+ */
+export interface RegExpPersonalinfo {
+  title: RegExp;
+  firstname: RegExp;
+  lastname: RegExp;
+  birth: RegExp;
+  email: RegExp;
+  idcard: RegExp;
+  address: RegExp;
+  contact: RegExp;
+  photo: RegExp;
+  nameBIB: RegExp;
+}
+// export type DraftData =
+//   | Personalinfo
+//   | ApplicationBG
+//   | EmergencyContact
+//   | Medicalinfo
+//   | Souvenir;
+
+// export type DraftType =
+//   | 'Personalinfo'
+//   | 'ApplicationBG'
+//   | 'EmergencyContact'
+//   | 'Medicalinfo'
+//   | 'Souvenir';
