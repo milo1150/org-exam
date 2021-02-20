@@ -1,4 +1,4 @@
-import { initMarathonState } from '../Typescript/Type';
+import { initMarathonState, Personalinfo } from '../Typescript/Type';
 export const initialState: initMarathonState = {
   currentStep: 0,
   Personalinfo: {
@@ -64,4 +64,17 @@ export const initialState: initMarathonState = {
   Souvenir: {
     Tshirt: '',
   },
+};
+
+export const MockPersonalinfo: Personalinfo = {
+  title: '',
+  firstname: '',
+  lastname: '',
+  birth: '',
+  email: '',
+  idcard: '',
+  address: '',
+  contact: '',
+  photo: '',
+  nameBIB: '',
 };

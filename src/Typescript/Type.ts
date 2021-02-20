@@ -18,6 +18,7 @@ export interface Personalinfo {
   contact: string;
   photo: string;
   nameBIB: string;
+  [index: string]: any;
 }
 
 export interface ApplicationBG {

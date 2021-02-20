@@ -18,6 +18,8 @@ function reducer(state: initMarathonState, action: ActionType) {
       let stateS: initMarathonState = { ...state };
       stateS.Personalinfo.firstname = action.payload;
       return { ...stateS };
+    // case 'updatePersonalinfo':
+
     default:
       return initialState;
   }
@@ -37,16 +39,19 @@ const Applicant: React.FC = () => {
       }
     }
     if (key) {
-      // API to backend and update useReducer state if key exist
-      console.log(key);
+      /**
+       * API to backend and update useReducer state if key exist
+       * then dispatch Reducer
+       * example : dispatch({ type: 'updateInitialState', payload: {data from backend} });
+       */
       dispatch({ type: 'updatePersonalinfo', payload: 'kortoei' });
     } else {
-      const uuid: string = uuidv4();
       // DF is just sample name of applicant key
+      const uuid: string = uuidv4();
       document.cookie = `DF=${uuid}`;
     }
     document.cookie = 'DF=;expires = Thu, 01 Jan 1970 00:00:00 GMT';
-    console.log(state);
+    // console.log(state);
   }, []);
   return (
     <Layout>
