@@ -14,7 +14,7 @@ export const PersonalinfoDraftValidate = (data: Personalinfo): RegCheckObj => {
   const errMsg: string[] = [];
   for (let k of arr) {
     const key: string = k[0];
-    const value: any = k[1];
+    const value: string | any = k[1];
     switch (key) {
       case 'title':
         break;
@@ -27,7 +27,7 @@ export const PersonalinfoDraftValidate = (data: Personalinfo): RegCheckObj => {
       case 'email':
         break;
       case 'idcard':
-        if (!RegExpPersonalinfo.idcard.test(value)) {
+        if (!RegExpPersonalinfo.idcard.test(value) || value.length !== 13) {
           okNumber--;
           errMsg.push('เลขบัตรประชาชน');
         }

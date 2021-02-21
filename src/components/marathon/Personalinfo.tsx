@@ -25,7 +25,6 @@ interface props {
 }
 
 const Personalinfo: React.FC<props> = ({ props, dispatch, saveDraft }) => {
-
   // Setup
   const [draft, setDraft] = useState<PropsType>(props);
   const { handleSubmit, control, errors } = useForm<PropsType>({
@@ -169,7 +168,7 @@ const Personalinfo: React.FC<props> = ({ props, dispatch, saveDraft }) => {
               control={control}
               rules={{
                 required: true,
-                maxLength: 13,
+                minLength: 13,
                 pattern: RegExpPersonalinfo.idcard,
               }}
               render={({ onChange, value, name }) => (
@@ -184,9 +183,13 @@ const Personalinfo: React.FC<props> = ({ props, dispatch, saveDraft }) => {
               )}
             />
           </InputBox>
-          {(errors.idcard && errors.idcard.type === 'pattern' && (
-            <SpanError>โปรดระบุตัวเลขเท่านั้น</SpanError>
-          )) ||
+          {
+            (errors.idcard && errors.idcard.type === 'minLength' && (
+              <SpanError>โปรดระบุตัวเลข 13 หลัก</SpanError>
+              )) ||
+              (errors.idcard && errors.idcard.type === 'pattern' && (
+                <SpanError>โปรดระบุตัวเลขเท่านั้น</SpanError>
+              )) ||
             (errors.idcard && <SpanError>โปรดระบุ</SpanError>)}
           <InputBox>
             <P2>ที่อยู่</P2>

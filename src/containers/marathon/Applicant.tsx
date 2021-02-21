@@ -81,7 +81,7 @@ const Applicant: React.FC = () => {
       const uuid: string = uuidv4();
       document.cookie = `DF=${uuid}`;
     }
-    // document.cookie = 'DF=;expires = Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'DF=;expires = Thu, 01 Jan 1970 00:00:00 GMT';
   }, []);
 
   useEffect(() => {
