@@ -1,5 +1,3 @@
-import Personalinfo from '../components/marathon/Personalinfo';
-
 // Main Initialstate
 export interface initMarathonState {
   currentStep: number;
