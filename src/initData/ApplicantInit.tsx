@@ -66,6 +66,13 @@ export const initialState: initMarathonState = {
   },
 };
 
+/**
+|--------------------------------------------------
+| TEST
+|--------------------------------------------------
+*/
+
+// Save Draft Test and Form Test
 export const MockPersonalinfo: Personalinfo = {
   title: 'Mr',
   firstname: 'kortoei ',
@@ -78,3 +85,17 @@ export const MockPersonalinfo: Personalinfo = {
   photo: '',
   nameBIB: '',
 };
+
+// // Full Form Test
+// export const MockPersonalinfo: Personalinfo = {
+//   title: 'Mr',
+//   firstname: 'kortoei ',
+//   lastname: 'tongmanee',
+//   birth: '120938',
+//   email: 'oosamuoo02@gmail.com',
+//   idcard: '111559874',
+//   address: '121 M.10 Paknum Chumphon',
+//   contact: '0994717374',
+//   photo: 'ABC',
+//   nameBIB: 'Helloworld',
+// };

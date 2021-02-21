@@ -67,16 +67,22 @@ export interface Souvenir {
 }
 
 /**
- * useReducer(Applicant) ACTION TYPE
- */
+|--------------------------------------------------
+| useReducer(Applicant) ActionType
+|--------------------------------------------------
+*/
 
 export type ActionType =
   | { type: 'updatePersonalinfoTest'; payload: Personalinfo }
   | { type: 'currentstep'; payload: number }
-  | { type: 'updatePersonalinfo'; payload: Personalinfo };
+  | { type: 'stepback'; payload: number }
+  | { type: 'updatePersonalinfo'; payload: Personalinfo }
+  | { type: 'savePersonalinfo'; payload: Personalinfo };
 
 /**
- * Save Draft RegExp
+ |--------------------------------------------------
+ | Save Draft RegExp
+ |--------------------------------------------------
  */
 
 // Return Type of Check Draft

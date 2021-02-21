@@ -9,6 +9,7 @@ import {
   ActionType,
 } from '../../Typescript/Type';
 import PersonalinfoComp from '../../components/marathon/Personalinfo';
+import ApplicantBGComp from '../../components/marathon/ApplicantBG';
 
 const { Step } = Steps;
 
@@ -18,15 +19,26 @@ function reducer(
 ): initMarathonState {
   switch (action.type) {
     case 'updatePersonalinfoTest':
-      console.log('BRUH:', action.payload);
+      console.log('COOKIES:', action.payload);
       const testData = { ...state };
       testData['Personalinfo'] = action.payload;
       return testData;
+    case 'stepback':
+      console.log('StepBack');
+      state.currentStep = action.payload - 1;
+      return { ...state };
     case 'updatePersonalinfo':
       console.log('updatepersonalinfo:', action.payload);
       const dataPersonalinfo = { ...state };
       dataPersonalinfo['Personalinfo'] = action.payload;
+      dataPersonalinfo.currentStep = 1;
       return dataPersonalinfo;
+    case 'savePersonalinfo':
+      console.log('saveDraftPersonalinfo:', action.payload);
+      const savePersonalinfo = { ...state };
+      savePersonalinfo['Personalinfo'] = action.payload;
+      // THEN API TO BACKEND
+      return savePersonalinfo;
     default:
       return initialState;
   }
@@ -34,10 +46,18 @@ function reducer(
 
 const Applicant: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  /* DISPATCH FUNCTION */
   function dispatchPersonalinfo(data: Personalinfo): void {
     return dispatch({ type: 'updatePersonalinfo', payload: data });
   }
+  function savePersonalinfo(data: Personalinfo): void {
+    return dispatch({ type: 'savePersonalinfo', payload: data });
+  }
+  function stepBack(n: number): void {
+    return dispatch({ type: 'stepback', payload: n });
+  }
 
+  /* ONLOAD */
   useMemo(() => {
     const cookies: string = document.cookie;
     const cookiesArr: string[] = cookies.split('; ');
@@ -55,8 +75,6 @@ const Applicant: React.FC = () => {
        * then dispatch Reducer
        * example : dispatch({ type: 'updateInitialState', payload: {data from backend} });
        */
-      console.log('GOT KEY');
-      console.log('MOCK:', MockPersonalinfo);
       dispatch({ type: 'updatePersonalinfoTest', payload: MockPersonalinfo });
     } else {
       // DF is just sample name of applicant key
@@ -86,9 +104,15 @@ const Applicant: React.FC = () => {
           <PersonalinfoComp
             props={state.Personalinfo}
             dispatch={dispatchPersonalinfo}
+            saveDraft={savePersonalinfo}
           />
         )}
-        {state.currentStep === 1 && <p>ข้อมูลเกี่ยวกับการวิ่ง</p>}
+        {state.currentStep === 1 && (
+          <ApplicantBGComp
+            currentStep={state.currentStep}
+            stepBack={stepBack}
+          />
+        )}
       </ApplicantBox>
     </Layout>
   );

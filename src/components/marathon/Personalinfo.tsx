@@ -21,16 +21,15 @@ import { PersonalinfoDraftValidate } from '../../function/ValidateDraft';
 interface props {
   props: PropsType;
   dispatch: (data: PropsType) => void;
+  saveDraft: (data: PropsType) => void;
 }
 
-const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
-  // console.log('props:', props);
+const Personalinfo: React.FC<props> = ({ props, dispatch, saveDraft }) => {
 
   // Setup
   const [draft, setDraft] = useState<PropsType>(props);
   const { handleSubmit, control, errors } = useForm<PropsType>({
     defaultValues: useMemo(() => {
-      console.log('USE MEMO:', props);
       return props;
     }, []),
   });
@@ -38,7 +37,7 @@ const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
   // dispatch Reducer
   const summary = (data: PropsType) => dispatch(data);
 
-  // Draft Zone
+  /* Check Draft Zone */
   const updateDraft = (value: any, name: string) => {
     setDraft((state): any => {
       const data: PropsType = { ...state };
@@ -46,20 +45,22 @@ const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
       return data;
     });
   };
-
   const checkDraft = (): void => {
     const data: RegCheckObj = PersonalinfoDraftValidate(draft);
-    if (data.status) message.success('Save Draft success');
-    else {
+    // if success -> popup message and update reducer state
+    if (data.status) {
+      message.success('Save Draft success');
+      saveDraft(draft);
+    } else {
       for (let i of data.errMsg) {
         message.error(`${i} ไม่ถูกต้อง`, 3);
       }
     }
   };
 
-  useEffect(() => {
-    console.log('draft:', draft);
-  }, [draft]);
+  // useEffect(() => {
+  // console.log('draft:', draft);
+  // }, [draft]);
 
   // When onload detect cookie, props will change value
   useEffect(() => {
