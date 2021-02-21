@@ -1,20 +1,55 @@
-import { Personalinfo, RegExpPersonalinfo } from '../Typescript/Type';
-export function ValidateDraft(data: Personalinfo): void {
-  const RegExp: RegExpPersonalinfo = {
-    title: /[a-zA-Z]/g,
-    firstname: /[a-zA-Z]/g,
-    lastname: /[a-zA-Z]/g,
-    birth: /[a-zA-Z]/g,
-    email: /[a-zA-Z]/g,
-    idcard: /[a-zA-Z]/g,
-    address: /[a-zA-Z]/g,
-    contact: /[0-9]/g,
-    photo: /[a-zA-Z]/g,
-    nameBIB: /[a-zA-Z]/g,
-  };
+import {
+  RegCheckObj,
+  Personalinfo,
+  RegExpPersonalinfo,
+} from '../Typescript/Type';
+
+export const PersonalinfoDraftValidate = (data: Personalinfo): RegCheckObj => {
   const arr: Array<[string, string]> = [];
   for (let i of Object.entries(data)) {
     if (i[1] !== '') arr.push(i);
   }
-  console.log(arr);
-}
+  let status: boolean = true;
+  let okNumber: number = arr.length;
+  const errMsg: string[] = [];
+  for (let k of arr) {
+    const key: string = k[0];
+    const value: any = k[1];
+    switch (key) {
+      case 'title':
+        break;
+      case 'firstname':
+        break;
+      case 'lastname':
+        break;
+      case 'birth':
+        break;
+      case 'email':
+        break;
+      case 'idcard':
+        if (!RegExpPersonalinfo.idcard.test(value)) {
+          okNumber--;
+          errMsg.push('เลขบัตรประชาชน');
+        }
+        break;
+      case 'address':
+        if (!RegExpPersonalinfo.address.test(value)) {
+          okNumber--;
+          errMsg.push('ที่อยู่');
+        }
+        break;
+      case 'contact':
+        if (!RegExpPersonalinfo.contact.test(value)) {
+          okNumber--;
+          errMsg.push('เบอร์โทรศัพท์');
+        }
+        break;
+      case 'photo':
+        break;
+      case 'nameBIB':
+        break;
+    }
+  }
+  if (okNumber !== arr.length) status = false;
+  return { status: status, errMsg: errMsg };
+};

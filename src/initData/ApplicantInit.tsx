@@ -72,9 +72,9 @@ export const MockPersonalinfo: Personalinfo = {
   lastname: 'tongmanee',
   birth: '',
   email: '',
-  idcard: '',
-  address: '55555555',
-  contact: '0994717374',
+  idcard: '111559874$#',
+  address: '121 M.10 Paknum Chumphon $#@',
+  contact: '0994717374 abcdef',
   photo: '',
   nameBIB: '',
 };

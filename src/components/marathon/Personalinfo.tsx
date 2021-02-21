@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button } from 'antd';
+import { Input, Button, message } from 'antd';
 import _ from 'lodash';
 import {
   ActionBox,
@@ -11,8 +11,12 @@ import {
 } from '../../style/component';
 import { P1, P2 } from '../../style/MarathonStyles';
 
-import { Personalinfo as PropsType } from '../../Typescript/Type';
-import { ValidateDraft } from '../../function/ValidateDraft';
+import {
+  Personalinfo as PropsType,
+  RegExpPersonalinfo,
+  RegCheckObj,
+} from '../../Typescript/Type';
+import { PersonalinfoDraftValidate } from '../../function/ValidateDraft';
 
 interface props {
   props: PropsType;
@@ -43,8 +47,14 @@ const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
     });
   };
 
-  const checkDraft = () => {
-    ValidateDraft(draft);
+  const checkDraft = (): void => {
+    const data: RegCheckObj = PersonalinfoDraftValidate(draft);
+    if (data.status) message.success('Save Draft success');
+    else {
+      for (let i of data.errMsg) {
+        message.error(`${i} ไม่ถูกต้อง`, 3);
+      }
+    }
   };
 
   useEffect(() => {
@@ -156,10 +166,15 @@ const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
             <Controller
               name="idcard"
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: true,
+                maxLength: 13,
+                pattern: RegExpPersonalinfo.idcard,
+              }}
               render={({ onChange, value, name }) => (
                 <Input
                   value={draft.idcard}
+                  maxLength={13}
                   onChange={(e) => {
                     onChange(e);
                     updateDraft(e.target.value, name);
@@ -168,13 +183,16 @@ const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
               )}
             />
           </InputBox>
-          {errors.idcard && <SpanError>โปรดระบุ</SpanError>}
+          {(errors.idcard && errors.idcard.type === 'pattern' && (
+            <SpanError>โปรดระบุตัวเลขเท่านั้น</SpanError>
+          )) ||
+            (errors.idcard && <SpanError>โปรดระบุ</SpanError>)}
           <InputBox>
             <P2>ที่อยู่</P2>
             <Controller
               name="address"
               control={control}
-              rules={{ required: true }}
+              rules={{ required: true, pattern: RegExpPersonalinfo.address }}
               render={({ onChange, value, name }) => (
                 <Input
                   value={draft.address}
@@ -186,13 +204,16 @@ const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
               )}
             />
           </InputBox>
-          {errors.address && <SpanError>โปรดระบุ</SpanError>}
+          {(errors.address && errors.address.type === 'pattern' && (
+            <SpanError>โปรดระบุตัวหนังสือและตัวเลขเท่านั้น</SpanError>
+          )) ||
+            (errors.address && <SpanError>โปรดระบุ</SpanError>)}
           <InputBox>
             <P2>เบอร์โทรศัพท์</P2>
             <Controller
               name="contact"
               control={control}
-              rules={{ required: true, pattern: /[0-9]/g }}
+              rules={{ required: true, pattern: RegExpPersonalinfo.contact }}
               render={({ onChange, value, name }) => (
                 <Input
                   value={draft.contact}
@@ -204,7 +225,11 @@ const Personalinfo: React.FC<props> = ({ props, dispatch }) => {
               )}
             />
           </InputBox>
-          {errors.contact && <SpanError>โปรดระบุ</SpanError>}
+          {(errors.contact && errors.contact.type === 'pattern' && (
+            <SpanError>โปรดระบุตัวเลขเท่านั้น</SpanError>
+          )) ||
+            (errors.contact && <SpanError>โปรดระบุ</SpanError>)}
+
           <InputBox>
             <P2>รูปถ่ายหน้าตรง</P2>
             <Controller

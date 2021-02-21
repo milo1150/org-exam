@@ -67,7 +67,7 @@ export interface Souvenir {
 }
 
 /**
- * ACTION TYPE
+ * useReducer(Applicant) ACTION TYPE
  */
 
 export type ActionType =
@@ -78,7 +78,14 @@ export type ActionType =
 /**
  * Save Draft RegExp
  */
-export interface RegExpPersonalinfo {
+
+// Return Type of Check Draft
+export interface RegCheckObj {
+  status: boolean;
+  errMsg: string[];
+}
+
+interface RegExpPersonalinfo {
   title: RegExp;
   firstname: RegExp;
   lastname: RegExp;
@@ -90,16 +97,15 @@ export interface RegExpPersonalinfo {
   photo: RegExp;
   nameBIB: RegExp;
 }
-// export type DraftData =
-//   | Personalinfo
-//   | ApplicationBG
-//   | EmergencyContact
-//   | Medicalinfo
-//   | Souvenir;
-
-// export type DraftType =
-//   | 'Personalinfo'
-//   | 'ApplicationBG'
-//   | 'EmergencyContact'
-//   | 'Medicalinfo'
-//   | 'Souvenir';
+export const RegExpPersonalinfo: RegExpPersonalinfo = {
+  title: /[a-zA-Z]/,
+  firstname: /[a-zA-Z]/,
+  lastname: /[a-zA-Z]/,
+  birth: /[0-9]/,
+  email: /[a-zA-Z]/,
+  idcard: /^[0-9]*$/,
+  address: /^[0-9a-z\s.]+$/i,
+  contact: /^[0-9]*$/,
+  photo: /[a-zA-Z]/,
+  nameBIB: /[a-zA-Z]/,
+};
